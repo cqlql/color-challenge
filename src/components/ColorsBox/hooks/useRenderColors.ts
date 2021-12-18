@@ -16,7 +16,7 @@ export default function useRenderColors(gameOver: () => void) {
   // 当前级别
   let colorGameLevel = 0
 
-  // 正确格式索引
+  // 正确格子索引
   let colorGameCorrect = -1
 
   function renderLevel(level: number) {

@@ -23,11 +23,6 @@ const colorGameLastStage = 50
 // 当前级别
 let colorGameLevel = 0
 
-// 格子数
-let grid = 0
-
-let colorGameCorrect = -1
-
 const { colors, gridColumnNumber, setLevel } = useRenderColors(gameOver)
 
 setLevel(30)
