@@ -27,9 +27,9 @@ import TransitionSlide from '@/components/Transition/Side.vue'
 import type { Derection } from '@/components/Transition/side'
 import { getStorage } from '../utils/local-storage'
 
-const compName = ref<
-  'StartContainer' | 'PlayContainer' | 'PlayContainerPractice'
->('StartContainer')
+type CompNameType = 'StartContainer' | 'PlayContainer' | 'PlayContainerPractice'
+
+const compName = ref<CompNameType>('PlayContainerPractice')
 
 const transitionDerection = ref<Derection>('left')
 
@@ -40,16 +40,6 @@ watch(compName, (name: string) => {
     transitionDerection.value = 'left'
   }
 })
-
-function toPlay() {
-  compName.value = 'PlayContainer'
-}
-function toPlayPractice() {
-  compName.value = 'PlayContainerPractice'
-}
-function toStart() {
-  compName.value = 'StartContainer'
-}
 
 const challengerName = getStorage('challengerName')
 const isLimitTime = getStorage('isLimitTime')
@@ -62,6 +52,16 @@ const setting = reactive<Setting>({
 })
 
 provide('setting', setting)
+
+function toPlay() {
+  compName.value = 'PlayContainer'
+}
+function toPlayPractice() {
+  compName.value = 'PlayContainerPractice'
+}
+function toStart() {
+  compName.value = 'StartContainer'
+}
 </script>
 
 <style lang="scss">

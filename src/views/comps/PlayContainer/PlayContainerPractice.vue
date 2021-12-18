@@ -15,14 +15,7 @@
       {{ currentWordInfo.label }}
     </div>
     <div class="PlayContainer_body">
-      <WordInput
-        ref="vWordInput"
-        v-if="isPlay"
-        v-model:value="iptWordValue"
-        :correctWord="currentWordInfo.value"
-        @keyup.enter="onEnter"
-        @input="onInput"
-      />
+      <ColorsBox v-if="isPlay" />
       <div v-else-if="isCountDown" class="PlayContainer_countdown">
         {{ countDown }}
       </div>
@@ -62,7 +55,7 @@ import TimeCount from '../TimeCount.vue'
 import ResultDialog from '../ResultDialog.vue'
 import type { PlayStatusType } from './composable/useWordIpt'
 import useWordIpt from './composable/useWordIpt'
-import WordInput from '../WordInput.vue'
+import ColorsBox from '@/components/ColorsBox/ColorsBox.vue'
 // import compare from './utils/compare'
 
 // const setting = inject<Setting>('setting') as Setting
@@ -115,7 +108,7 @@ let {
   true,
 )
 
-let { countDown, countDownRestart } = useCountDown(3, playStatus)
+let { countDown, countDownRestart } = useCountDown(0, playStatus)
 
 let isPlay = computed(() => {
   return playStatus.value === 'play'
