@@ -1,0 +1,27 @@
+body {
+  background-color: #edfdff;
+  margin: 0;
+}
+body,
+input {
+  color: #333;
+  font: 14px/1.2 'Microsoft Yahei', sans-serif, arial, SimSun, tahoma, Srial,
+    helvetica;
+}
+
+// 过渡动画激活
+.transition-active {
+  transition: 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+  transition-property: opacity, transform;
+}
+
+.full-bg {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: url('@/assets/bg.png') 50% no-repeat;
+  // background: url(//eng.cqlql.ltd/static/bg-start.02c7e8b.png) 50% no-repeat;
+  background-size: auto 100%;
+}
