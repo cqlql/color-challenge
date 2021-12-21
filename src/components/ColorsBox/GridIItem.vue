@@ -5,6 +5,7 @@
       width: `${size}%`,
       height: `${size}%`,
     }"
+    @click="onClick"
   >
     <div
       class="GridIItem-el"
@@ -40,7 +41,15 @@ const props = withDefaults(
   },
 )
 
+const emits = defineEmits<{
+  (e: 'click'): void
+}>()
+
 const size = computed(() => 100 / props.gridColumnNumber)
+
+function onClick() {
+  emits('click')
+}
 </script>
 <style lang="scss">
 .GridIItem {

@@ -6,7 +6,7 @@ type ColorType = {
   b: number
 }
 
-export default function useRenderColors(gameOver: () => void) {
+export default function useRenderColors() {
   const colors = ref<ColorType[]>([])
   const gridColumnNumber = ref(1)
 
@@ -14,61 +14,82 @@ export default function useRenderColors(gameOver: () => void) {
   const colorGameLastStage = 50
 
   // 当前级别
-  let colorGameLevel = 0
+  const colorGameLevel = ref(0)
 
   // 正确格子索引
-  let colorGameCorrect = -1
+  const correctIndex = ref(-1)
 
-  function renderLevel(level: number) {
-    // if (level > colorGameLastStage) {
-    //   // 挑战完成
-    //   gameOver()
-    // } else {
-    //   colorGameLevel = level
-
-      const gridColumnNumberVal = colorGameLevelGrid(level),
-        o = colorGameLevelColorDiff(level),
-        n = rangeColor(o),
-        s = rangeColor(o),
-        i = rangeColor(o)
-      const colorsVal: ColorType[] = []
-
-      let correct = 0
-
-      // 正确的格子索引，随机，并保证与上一次不等
-      do {
-        correct = Math.floor(
-          Math.random() * gridColumnNumberVal * gridColumnNumberVal,
-        )
-      } while (colorGameCorrect == correct)
-      colorGameCorrect = correct
-
-      for (let c = 0; c < gridColumnNumberVal * gridColumnNumberVal; c++) {
-        c == correct
-          ? colorsVal.push({
-              r: n,
-              g: s,
-              b: i,
-            })
-          : colorsVal.push({
-              r: n + o,
-              g: s + o,
-              b: i + o,
-            })
-      }
-      // colors.value = colorsVal
-      // gridColumnNumber.value = gridColumnNumberVal
-      return { colors, gridColumnNumber }
-    }
+  function setLevel(level: number) {
+    const colorData = renderLevel(level, correctIndex.value)
+    colors.value = colorData.colors
+    gridColumnNumber.value = colorData.gridColumnNumber
+    correctIndex.value = colorData.correctIndex
+    colorGameLevel.value = level
   }
 
   return {
     colors,
     gridColumnNumber,
-    setLevel(level: number) {
-      renderLevel(level)
+    colorGameLevel,
+    setLevel,
+    nextLevel() {
+      let level = colorGameLevel.value
+      level += 1
+      if (level > colorGameLastStage) {
+        // 挑战完成
+        // gameOver()
+      } else {
+        setLevel(level)
+      }
+    },
+    isRight(index: number) {
+      if (correctIndex.value === index) {
+        return true
+      }
+      return false
     },
   }
+}
+
+function renderLevel(level: number, prevCorrect = -1) {
+  // if (level > colorGameLastStage) {
+  //   // 挑战完成
+  //   gameOver()
+  // } else {
+  //   colorGameLevel = level
+
+  const gridColumnNumber = colorGameLevelGrid(level),
+    o = colorGameLevelColorDiff(level),
+    n = rangeColor(o),
+    s = rangeColor(o),
+    i = rangeColor(o)
+  const colors: ColorType[] = []
+
+  let correctIndex = 0
+
+  // 正确的格子索引，随机，并保证与上一次不等
+  do {
+    correctIndex = Math.floor(
+      Math.random() * gridColumnNumber * gridColumnNumber,
+    )
+  } while (prevCorrect == correctIndex)
+
+  for (let c = 0; c < gridColumnNumber * gridColumnNumber; c++) {
+    c === correctIndex
+      ? colors.push({
+          r: n,
+          g: s,
+          b: i,
+        })
+      : colors.push({
+          r: n + o,
+          g: s + o,
+          b: i + o,
+        })
+  }
+  // colors.value = colors
+  // gridColumnNumber.value = gridColumnNumber
+  return { colors, gridColumnNumber, correctIndex }
 }
 
 function colorGameLevelGrid(level: number) {
