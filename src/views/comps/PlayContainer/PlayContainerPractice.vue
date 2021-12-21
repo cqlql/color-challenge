@@ -10,6 +10,7 @@
           </div>
         </div>
       </div>
+      <div>header</div>
     </template>
     <div v-if="!isCountDown" class="PlayContainer_word-lb">
       {{ currentWordInfo.label }}

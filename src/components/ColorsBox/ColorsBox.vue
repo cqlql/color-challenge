@@ -20,10 +20,13 @@ import useRenderColors from './hooks/useRenderColors'
 // 最高级
 const colorGameLastStage = 50
 
-// 当前级别
-let colorGameLevel = 0
-
-const { colors, gridColumnNumber, setLevel } = useRenderColors(gameOver)
+const {
+  colors,
+  gridColumnNumber,
+  setLevel,
+  // 当前级别
+  colorGameLevel,
+} = useRenderColors(gameOver)
 
 setLevel(30)
 
