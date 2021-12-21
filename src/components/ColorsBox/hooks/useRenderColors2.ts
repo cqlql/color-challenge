@@ -25,7 +25,7 @@ export default function useRenderColors() {
     colors,
     gridColumnNumber,
     setLevel(level: number) {
-      renderLevel(level)
+      const {} =  renderLevel(level, colorGameCorrect)
     },
   }
 }

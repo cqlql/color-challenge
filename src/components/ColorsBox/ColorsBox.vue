@@ -6,6 +6,7 @@
         :key="index"
         :color="color"
         :gridColumnNumber="gridColumnNumber"
+        @click="onClick"
       ></GridIItem>
     </div>
   </div>
@@ -15,7 +16,7 @@
 import { ref } from 'vue'
 
 import GridIItem from './GridIItem.vue' // @ is an alias to /src
-import useRenderColors from './hooks/useRenderColors'
+import useRenderColors from './hooks/useRenderColors2'
 
 // 最高级
 const colorGameLastStage = 50
@@ -26,9 +27,9 @@ const {
   setLevel,
   // 当前级别
   colorGameLevel,
-} = useRenderColors(gameOver)
+} = useRenderColors()
 
-setLevel(30)
+// setLevel(1)
 
 // 显示游戏结束
 function showGameOver(level) {
@@ -46,6 +47,8 @@ function gameOver() {
     showGameOver(colorGameLevel - 1)
   }, 2000)
 }
+
+function onClick(index) {}
 </script>
 <style lang="scss">
 .ColorsBox {

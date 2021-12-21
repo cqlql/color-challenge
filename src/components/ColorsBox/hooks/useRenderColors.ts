@@ -20,11 +20,11 @@ export default function useRenderColors(gameOver: () => void) {
   let colorGameCorrect = -1
 
   function renderLevel(level: number) {
-    if (level > colorGameLastStage) {
-      // 挑战完成
-      gameOver()
-    } else {
-      colorGameLevel = level
+    // if (level > colorGameLastStage) {
+    //   // 挑战完成
+    //   gameOver()
+    // } else {
+    //   colorGameLevel = level
 
       const gridColumnNumberVal = colorGameLevelGrid(level),
         o = colorGameLevelColorDiff(level),
@@ -56,8 +56,8 @@ export default function useRenderColors(gameOver: () => void) {
               b: i + o,
             })
       }
-      colors.value = colorsVal
-      gridColumnNumber.value = gridColumnNumberVal
+      // colors.value = colorsVal
+      // gridColumnNumber.value = gridColumnNumberVal
       return { colors, gridColumnNumber }
     }
   }
