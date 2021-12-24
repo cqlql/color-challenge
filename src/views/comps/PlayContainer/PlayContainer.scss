@@ -18,6 +18,8 @@
   margin: 26px 0;
   text-align: center;
   position: relative;
+  display: flex;
+  justify-content: space-between;
 }
 .PlayContainer_body {
   min-height: 180px;
@@ -84,9 +86,9 @@
 }
 
 .PlayContainer_header-r-info {
-  position: absolute;
-  right: 48px;
-  top: -10px;
+  // position: absolute;
+  // right: 48px;
+  // top: -10px;
   text-align: right;
   .tp-name {
     font-size: 16px;
@@ -96,14 +98,14 @@
     // right: 50px;
     // line-height: 1;
   }
-  .curr-word {
-    padding-bottom: 8px;
-    font-size: 16px;
-    line-height: 24px;
-    color: #666;
-    text-align: right;
-    b {
-      color: #00b7ee;
-    }
-  }
+  // .curr-word {
+  //   padding-bottom: 8px;
+  //   font-size: 16px;
+  //   line-height: 24px;
+  //   color: #666;
+  //   text-align: right;
+  //   b {
+  //     color: #00b7ee;
+  //   }
+  // }
 }

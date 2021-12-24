@@ -2,20 +2,12 @@
   <j-container class="PlayContainer">
     <template #header>
       <div class="PlayContainer_header">
-        <TimeCount ref="vTimeCount" @end="timeEnd" :isPractice="true" />
         <div class="PlayContainer_header-r-info">
           <div class="tp-name">练习模式</div>
-          <div class="curr-word">
-            已输入 <b>{{ inputWordCount }}</b> 个单词
-          </div>
+          <GameTimeCountdown v-if="isPlay" :key="level" @timeUp="timeUp" />
         </div>
-      </div>
-      <div>
-        <GameTimeCountdown v-if="isPlay" :key="level" @timeUp="timeUp" />
-      </div>
-      <div>
-        级别：
-        {{ level }}
+        <TimeCount ref="vTimeCount" @end="timeEnd" :isPractice="true" />
+        <div> 等级：{{ level }} </div>
       </div>
     </template>
     <div v-if="!isCountDown" class="PlayContainer_word-lb">
