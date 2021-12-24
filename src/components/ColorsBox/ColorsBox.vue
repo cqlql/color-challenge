@@ -7,20 +7,21 @@
         :color="color"
         :gridColumnNumber="gridColumnNumber"
         :class="{ zoom: zoomIndex === index }"
-        @click="onClick(index)"
+        @click="onSelect(index)"
       ></GridIItem>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 import GridIItem from './GridIItem.vue' // @ is an alias to /src
 import useRenderColors from './hooks/useRenderColors'
 
 const props = withDefaults(
   defineProps<{
     level: number
+    errorReminder?: boolean
   }>(),
   {
     level: 1,
@@ -29,11 +30,11 @@ const props = withDefaults(
 
 const emits = defineEmits<{
   (e: 'update:level', v: number): void
+  (e: 'errorSelect'): void
 }>()
 
-const zoomIndex = ref(-1)
-
 const {
+  zoomIndex,
   colors,
   gridColumnNumber,
   setLevel,
@@ -64,18 +65,27 @@ setLevel(1)
 //   }, 2000)
 // }
 
-function onClick(index: number) {
+defineExpose({
+  showCorrect,
+})
+
+function onSelect(index: number) {
   if (isRight(index)) {
     nextLevel()
+  } else {
+    if (props.errorReminder) {
+      showCorrect()
+    }
+    emits('errorSelect')
   }
 }
 
-defineExpose({
-  showCorrect() {
+function showCorrect() {
+  zoomIndex.value = -1
+  setTimeout(() => {
     zoomIndex.value = correctIndex.value
-    console.log(correctIndex.value)
-  },
-})
+  }, 1)
+}
 </script>
 <style lang="scss">
 .ColorsBox {

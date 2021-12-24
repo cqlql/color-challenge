@@ -22,7 +22,13 @@
       {{ currentWordInfo.label }}
     </div>
     <div class="PlayContainer_body">
-      <ColorsBox ref="vColorsBox" v-if="isPlay" v-model:level="level" />
+      <ColorsBox
+        ref="vColorsBox"
+        v-if="isPlay"
+        v-model:level="level"
+        errorReminder
+        @errorSelect="colorSelectError"
+      />
       <div v-else-if="isCountDown" class="PlayContainer_countdown">
         {{ countDown }}
       </div>
@@ -183,6 +189,9 @@ function timeEnd() {
   confirm(iptWordValue.value)
 }
 
+function colorSelectError() {
+  console.log('颜色选择错误')
+}
 // function onInput() {
 //   hasInputError.value = false
 //   inputInfo.value = ''

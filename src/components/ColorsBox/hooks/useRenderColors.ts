@@ -19,7 +19,12 @@ export default function useRenderColors(props: Readonly<{ level: number }>) {
   // 正确格子索引
   const correctIndex = ref(-1)
 
+  // 放大指定方块，提示方块位置
+  const zoomIndex = ref(-1)
+
   function setLevel(level: number) {
+    zoomIndex.value = -1 // 停止当前动画
+
     const colorData = renderLevel(level, correctIndex.value)
     colors.value = colorData.colors
     gridColumnNumber.value = colorData.gridColumnNumber
@@ -28,6 +33,7 @@ export default function useRenderColors(props: Readonly<{ level: number }>) {
   }
 
   return {
+    zoomIndex,
     colors,
     gridColumnNumber,
     colorGameLevel,
