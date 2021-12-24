@@ -8,3 +8,11 @@ declare interface Setting {
   isLimitTime?: boolean
   time?: string
 }
+
+declare namespace NodeJS {
+  interface Process {
+    env: {
+      NODE_ENV: 'production' | 'development'
+    }
+  }
+}

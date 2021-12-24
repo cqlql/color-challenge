@@ -56,11 +56,11 @@
 <script setup lang="ts">
 import { ref, watch, computed, inject } from 'vue'
 
-import useCountDown from './composable/useCountDown'
+import useCountDown from './hooks/useCountDown'
 import TimeCount from '../TimeCount.vue'
 import ResultDialog from '../ResultDialog.vue'
-import type { PlayStatusType } from './composable/useWordIpt'
-import useWordIpt from './composable/useWordIpt'
+import type { PlayStatusType } from './hooks/useWordIpt'
+import useWordIpt from './hooks/useWordIpt'
 // import compare from './utils/compare'
 
 const setting = inject<Setting>('setting') as Setting

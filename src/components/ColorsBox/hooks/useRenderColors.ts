@@ -6,9 +6,9 @@ type ColorType = {
   b: number
 }
 
-export default function useRenderColors() {
+export default function useRenderColors(props: Readonly<{ level: number }>) {
   const colors = ref<ColorType[]>([])
-  const gridColumnNumber = ref(1)
+  const gridColumnNumber = ref(props.level)
 
   // 最高级
   const colorGameLastStage = 50
@@ -31,6 +31,7 @@ export default function useRenderColors() {
     colors,
     gridColumnNumber,
     colorGameLevel,
+    correctIndex,
     setLevel,
     nextLevel() {
       let level = colorGameLevel.value

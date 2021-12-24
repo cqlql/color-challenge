@@ -1,11 +1,12 @@
 <template>
   <div class="ColorsBox">
-    <div class="container">
+    <div class="ColorsBox_container">
       <GridIItem
         v-for="(color, index) of colors"
         :key="index"
         :color="color"
         :gridColumnNumber="gridColumnNumber"
+        :class="{ zoom: zoomIndex === index }"
         @click="onClick(index)"
       ></GridIItem>
     </div>
@@ -13,10 +14,24 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-
+import { ref, watch } from 'vue'
 import GridIItem from './GridIItem.vue' // @ is an alias to /src
 import useRenderColors from './hooks/useRenderColors'
+
+const props = withDefaults(
+  defineProps<{
+    level: number
+  }>(),
+  {
+    level: 1,
+  },
+)
+
+const emits = defineEmits<{
+  (e: 'update:level', v: number): void
+}>()
+
+const zoomIndex = ref(-1)
 
 const {
   colors,
@@ -26,32 +41,41 @@ const {
   isRight,
   // 当前级别
   colorGameLevel,
-} = useRenderColors()
+  // 正确格子索引
+  correctIndex,
+} = useRenderColors(props)
+
+watch(colorGameLevel, (colorGameLevelVal) => {
+  emits('update:level', colorGameLevelVal)
+})
 
 setLevel(1)
 
 // 显示游戏结束
-function showGameOver(level: number) {
-  //
-}
+// function showGameOver(level: number) {}
 
-function showCorrect() {
-  //
-}
+// function showCorrect() {}
 
 //
-function gameOver() {
-  // showCorrect();
-  setTimeout(() => {
-    // showGameOver(colorGameLevel - 1)
-  }, 2000)
-}
+// function gameOver() {
+//   // showCorrect();
+//   setTimeout(() => {
+//     // showGameOver(colorGameLevel - 1)
+//   }, 2000)
+// }
 
 function onClick(index: number) {
   if (isRight(index)) {
     nextLevel()
   }
 }
+
+defineExpose({
+  showCorrect() {
+    zoomIndex.value = correctIndex.value
+    console.log(correctIndex.value)
+  },
+})
 </script>
 <style lang="scss">
 .ColorsBox {
@@ -59,7 +83,7 @@ function onClick(index: number) {
   position: relative;
 }
 
-.container {
+.ColorsBox_container {
   position: absolute;
   left: 0;
   right: 0;
@@ -67,23 +91,20 @@ function onClick(index: number) {
   bottom: 0;
   width: 100%;
   height: 100%;
-}
 
-.grid {
-  width: 20px;
-  height: 20px;
+  .zoom {
+    animation: zoom 1s ease-out;
+    z-index: 1;
+  }
 
-  /* margin: 10px; */
-  float: left;
-  position: relative;
-}
+  @keyframes zoom {
+    0% {
+      transform: scale(1);
+    }
 
-.grid-el {
-  position: absolute;
-  top: 5px;
-  bottom: 5px;
-  left: 5px;
-  right: 5px;
-  border-radius: 5px;
+    to {
+      transform: scale(1.5);
+    }
+  }
 }
 </style>
