@@ -1,6 +1,6 @@
 export default function levelGrade(level: number, maxLevel: number) {
   const grades = [
-    // { name: '有问题' },
+    { name: '色盲' },
     { name: '初级' },
     { name: '一般' },
     { name: '突出的色感' },
@@ -11,6 +11,11 @@ export default function levelGrade(level: number, maxLevel: number) {
 
   const gradesTotal = grades.length
 
-  const grade = ~~(level / (maxLevel / gradesTotal))
+  if (level === 0) {
+    return grades[0].name
+  }
+
+  const grade = Math.ceil(level / (maxLevel / gradesTotal))
+
   return grades[grade - 1].name
 }

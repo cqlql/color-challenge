@@ -32,7 +32,7 @@ const props = withDefaults(
 
 const emits = defineEmits<{
   (e: 'update:level', v: number): void
-  (e: 'errorSelect', result: { gradeTitle: string }): void
+  (e: 'errorSelect'): void
   (e: 'complete'): void
 }>()
 
@@ -46,8 +46,11 @@ if (process.env.NODE_ENV !== 'production') {
   colorGameLastStage = 2
 }
 
-// 当前级别
+// 当前进行的级别
 const colorGameLevel = ref(0)
+
+// 当前完成的级别
+const currentLevel = ref(colorGameLevel.value)
 
 // 正确格子索引
 const correctIndex = ref(-1)
@@ -66,6 +69,7 @@ watch(colorGameLevel, (colorGameLevelVal) => {
 
 defineExpose({
   showCorrect,
+  currentLevel,
   reset() {
     pause.value = false
     colorGameLevel.value = 1
@@ -74,7 +78,7 @@ defineExpose({
     pause.value = true
   },
   getGradeTitle() {
-    return levelGrade(colorGameLevel.value, colorGameLastStage)
+    return levelGrade(currentLevel.value, colorGameLastStage)
   },
 })
 
@@ -111,14 +115,13 @@ function onSelect(index: number) {
   if (pause.value) return
 
   if (isRight(index)) {
+    currentLevel.value = colorGameLevel.value
     nextLevel()
   } else {
     // if (props.errorReminder) {
     //   showCorrect()
     // }
-    emits('errorSelect', {
-      gradeTitle: levelGrade(colorGameLevel.value, colorGameLastStage),
-    })
+    emits('errorSelect')
   }
 }
 

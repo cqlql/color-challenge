@@ -28,7 +28,6 @@
       v-model:visible="dialogVisible"
       title="挑战结果"
       :completeMsg="completeMsg"
-      :gradeMsg="gradeMsg"
       :list="dialogDataList"
       confirmBtnText="重新挑战"
       @confirm="restart"
@@ -77,6 +76,7 @@ const vTimeCount = ref({
 })
 
 const vColorsBox = ref({
+  currentLevel: 0,
   showCorrect() {
     console.log('vColorsBox 未初始')
   },
@@ -102,7 +102,6 @@ const playStatus = ref<PlayStatusType>('countDown')
 const { level } = useColorGame()
 
 const completeMsg = ref('')
-const gradeMsg = ref('')
 
 let { countDown, countDownRestart } = useCountDown(
   playCountdownTime,
@@ -143,7 +142,6 @@ function stopPlay(isComplete?: boolean) {
   } else {
     completeMsg.value = ''
   }
-  gradeMsg.value = vColorsBox.value.getGradeTitle()
 
   vColorsBox.value.pause()
 
@@ -155,14 +153,15 @@ function stopPlay(isComplete?: boolean) {
       label: '挑战人',
     },
     {
-      value: String(level.value) + '关',
-      label: '通过关数',
-    },
-    {
       value: vColorsBox.value.getGradeTitle(),
       label: '色感等级',
       rowClass: 'value-em',
     },
+    {
+      value: String(vColorsBox.value.currentLevel) + '关',
+      label: '通过关数',
+    },
+
     {
       value: setting.isLimitTime ? '限时挑战' : '不限时挑战',
       label: '挑战模式',

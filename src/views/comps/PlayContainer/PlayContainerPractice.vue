@@ -27,7 +27,6 @@
       v-model:visible="dialogVisible"
       title="练习结果"
       :completeMsg="completeMsg"
-      :gradeMsg="gradeMsg"
       :list="dialogDataList"
       confirmBtnText="重新练习"
       @confirm="restart"
@@ -47,6 +46,7 @@ import { ref, watch, computed } from 'vue'
 
 import useCountDown from './hooks/useCountDown'
 import TimeCount from '../TimeCount.vue'
+import type { ResultDialogItemType } from '../ResultDialog.vue'
 import ResultDialog from '../ResultDialog.vue'
 import type { PlayStatusType } from './hooks/useWordIpt'
 import ColorsBox from '@/components/ColorsBox/ColorsBox.vue'
@@ -74,6 +74,7 @@ const vTimeCount = ref({
 })
 
 const vColorsBox = ref({
+  currentLevel: 0,
   showCorrect() {
     console.log('vColorsBox 未初始')
   },
@@ -92,14 +93,13 @@ const vColorsBox = ref({
 defineEmits(['back'])
 
 const dialogVisible = ref(false)
-const dialogDataList = ref<GeneralItem[]>([])
+const dialogDataList = ref<ResultDialogItemType[]>([])
 
 const playStatus = ref<PlayStatusType>('countDown')
 
 const { level } = useColorGame()
 
 const completeMsg = ref('')
-const gradeMsg = ref('')
 
 let { countDown, countDownRestart } = useCountDown(
   playCountdownTime,
@@ -139,14 +139,18 @@ function stopPlay(isComplete?: boolean) {
   } else {
     completeMsg.value = ''
   }
-  gradeMsg.value = vColorsBox.value.getGradeTitle()
 
   vColorsBox.value.pause()
 
   vTimeCount.value.stopTime()
   dialogDataList.value = [
     {
-      value: String(level.value) + '关',
+      value: vColorsBox.value.getGradeTitle(),
+      label: '色感等级',
+      rowClass: 'value-em',
+    },
+    {
+      value: String(vColorsBox.value.currentLevel) + '关',
       label: '通过关数',
     },
     {
