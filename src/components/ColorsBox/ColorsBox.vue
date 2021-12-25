@@ -34,10 +34,10 @@ const emits = defineEmits<{
 }>()
 
 const {
+  pause,
   zoomIndex,
   colors,
   gridColumnNumber,
-  setLevel,
   nextLevel,
   isRight,
   // 当前级别
@@ -49,8 +49,6 @@ const {
 watch(colorGameLevel, (colorGameLevelVal) => {
   emits('update:level', colorGameLevelVal)
 })
-
-setLevel(1)
 
 // 显示游戏结束
 // function showGameOver(level: number) {}
@@ -67,9 +65,19 @@ setLevel(1)
 
 defineExpose({
   showCorrect,
+  reset() {
+    pause.value = false
+    colorGameLevel.value = 1
+  },
+  pause() {
+    pause.value = true
+  },
 })
 
 function onSelect(index: number) {
+  // 暂停情况不可点击
+  if (pause.value) return
+
   if (isRight(index)) {
     nextLevel()
   } else {

@@ -7,25 +7,24 @@
           <GameTimeCountdown v-if="isPlay" :key="level" @timeUp="timeUp" />
         </div>
         <TimeCount ref="vTimeCount" @end="timeEnd" :isPractice="true" />
-        <div> 等级：{{ level }} </div>
+        <div> 关卡：{{ level }} </div>
       </div>
     </template>
     <div v-if="!isCountDown" class="PlayContainer_word-lb">
       {{ currentWordInfo.label }}
     </div>
     <div class="PlayContainer_body">
-      <ColorsBox
-        ref="vColorsBox"
-        v-if="isPlay"
-        v-model:level="level"
-        errorReminder
-        @errorSelect="colorSelectError"
-      />
-      <div v-else-if="isCountDown" class="PlayContainer_countdown">
+      <div v-if="isCountDown" class="PlayContainer_countdown">
         {{ countDown }}
       </div>
       <template v-else>
-        <div class="englishchallenge-input" v-html="resolveWord"></div>
+        <ColorsBox
+          ref="vColorsBox"
+          v-model:level="level"
+          errorReminder
+          @errorSelect="colorSelectError"
+          @complete="colorGameComplete"
+        />
       </template>
     </div>
     <ResultDialog
@@ -90,6 +89,12 @@ const vColorsBox = ref({
   showCorrect() {
     console.log('vColorsBox 未初始')
   },
+  reset() {
+    console.log('vColorsBox 未初始')
+  },
+  pause() {
+    console.log('vColorsBox 未初始')
+  },
 })
 
 defineEmits(['back'])
@@ -101,6 +106,8 @@ const playStatus = ref<PlayStatusType>('countDown')
 
 const { level } = useColorGame()
 
+const completeMsg = ref('')
+
 let {
   inputWordCount,
   correctWordCount,
@@ -111,7 +118,6 @@ let {
   hasInputError,
   resolveWord,
   currentWordInfo,
-  completeMsg,
   resetInput,
 } = useWordIpt(
   () => {},
@@ -156,12 +162,19 @@ function timeUp() {
   vColorsBox.value.showCorrect()
 }
 
-function stopPlay() {
+/**
+ * @param {boolean} isComplete 是否完成所有关卡
+ */
+function stopPlay(isComplete: boolean) {
+  completeMsg.value = isComplete ? '恭喜你完成了所有管卡！' : ''
+
+  vColorsBox.value.pause()
+
   vTimeCount.value.stopTime()
   dialogDataList.value = [
     {
-      value: correctWordCount.value + '个',
-      label: '正确单词数',
+      value: String(level.value),
+      label: '通过关数',
     },
     {
       value: vTimeCount.value.getElapsedTime(),
@@ -169,9 +182,11 @@ function stopPlay() {
     },
   ]
   dialogVisible.value = true
+  playStatus.value = 'finish'
 }
 
 function restart() {
+  vColorsBox.value.reset()
   resetInput()
   countDownRestart()
   dialogVisible.value = false
@@ -183,6 +198,10 @@ function timeEnd() {
 
 function colorSelectError() {
   console.log('颜色选择错误')
+}
+
+function colorGameComplete() {
+  stopPlay(true)
 }
 // function onInput() {
 //   hasInputError.value = false

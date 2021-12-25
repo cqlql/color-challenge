@@ -9,9 +9,15 @@ type ColorType = {
 export default function useRenderColors(props: Readonly<{ level: number }>) {
   const colors = ref<ColorType[]>([])
   const gridColumnNumber = ref(props.level)
+  // 暂停
+  const pause = ref(false)
 
   // 最高级
-  const colorGameLastStage = 50
+  let colorGameLastStage = 50
+
+  if (process.env.NODE_ENV !== 'production') {
+    colorGameLastStage = 2
+  }
 
   // 当前级别
   const colorGameLevel = ref(0)
@@ -32,7 +38,10 @@ export default function useRenderColors(props: Readonly<{ level: number }>) {
     colorGameLevel.value = level
   }
 
+  setLevel(gridColumnNumber.value)
+
   return {
+    pause,
     zoomIndex,
     colors,
     gridColumnNumber,
