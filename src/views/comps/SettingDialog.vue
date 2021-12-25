@@ -9,7 +9,7 @@
       <div class="setting-dialog_ornament"></div>
     </template>
     <div class="setting-dialog_body">
-      <div class="row">
+      <div class="row" :class="{ err: challengerNameError }">
         <div class="row_label">挑战人：</div>
         <div class="row_value">
           <j-input
@@ -18,7 +18,9 @@
             placeholder="请输入挑战人姓名"
           ></j-input>
         </div>
+        <div class="errmsg"> 必须填写挑战人才能进行挑战模式 </div>
       </div>
+
       <div class="row">
         <div class="row_label">是否限时：</div>
         <div class="row_value">
@@ -49,8 +51,8 @@
         </div>
       </div>
       <div class="btns">
-        <j-button @click="confirm">确认</j-button>
         <j-button type="info" @click="close">取消</j-button>
+        <j-button @click="confirm">确认</j-button>
       </div>
     </div>
   </DialogVue>
@@ -71,10 +73,42 @@ const setting = inject<Setting>('setting') as Setting
 const challengerName = ref(setting.challengerName)
 const isLimitTime = ref(setting.isLimitTime)
 const time = ref(setting.time)
+const challengerNameError = ref(false)
 
 const emit = defineEmits<{
   (e: 'update:visible', visble: boolean): void
 }>()
+
+const vInputName = ref({
+  focus() {},
+})
+watch(
+  () => props.visible,
+  (visible) => {
+    if (visible) {
+      nextTick(() => {
+        nextTick(() => {
+          vInputName.value.focus()
+          challengerName.value = setting.challengerName
+        })
+      })
+    }
+  },
+)
+
+watch(challengerName, () => {
+  challengerNameError.value = false
+})
+
+defineExpose({
+  checkChallengerName() {
+    if (challengerName.value) {
+      return true
+    }
+    challengerNameError.value = true
+    emit('update:visible', true)
+  },
+})
 
 function close() {
   emit('update:visible', false)
@@ -96,20 +130,6 @@ function input(e: Event) {
   if (v > 99) v = 99
   ipt.value = String(v)
 }
-
-const vInputName = ref({
-  focus() {},
-})
-watch(
-  () => props.visible,
-  (visible) => {
-    if (visible) {
-      nextTick(() => {
-        vInputName.value.focus()
-      })
-    }
-  },
-)
 </script>
 <style lang="scss">
 .setting-dialog {
@@ -135,6 +155,7 @@ watch(
   .row {
     display: flex;
     padding: 10px 0;
+    position: relative;
   }
 
   .row_label {
@@ -170,6 +191,30 @@ watch(
 
     .j-button {
       margin: 0 30px;
+    }
+  }
+
+  .errmsg {
+    color: #f60202;
+    text-align: center;
+    font-size: 16px;
+    top: 45px;
+    position: absolute;
+    width: 100%;
+    display: none;
+  }
+
+  .row.err {
+    .j-input {
+      border-color: #f60202;
+    }
+
+    .j-input:focus-visible {
+      outline-color: #f60202;
+    }
+
+    .errmsg {
+      display: block;
     }
   }
 }

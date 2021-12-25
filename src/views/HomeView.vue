@@ -4,6 +4,7 @@
     <TransitionSlide :derection="transitionDerection">
       <component
         :is="{ StartContainer, PlayContainer, PlayContainerPractice }[compName]"
+        ref="vStartContainer"
         @start="toPlay"
         @startPractice="toPlayPractice"
         @back="toStart"
@@ -27,9 +28,9 @@ import TransitionSlide from '@/components/Transition/Side.vue'
 import type { Derection } from '@/components/Transition/side'
 import { getStorage } from '../utils/local-storage'
 
-type CompNameType = 'StartContainer' | 'PlayContainer' | 'PlayContainerPractice'
-
-const compName = ref<CompNameType>('PlayContainerPractice')
+const compName = ref<
+  'StartContainer' | 'PlayContainer' | 'PlayContainerPractice'
+>('StartContainer')
 
 const transitionDerection = ref<Derection>('left')
 
@@ -40,6 +41,24 @@ watch(compName, (name: string) => {
     transitionDerection.value = 'left'
   }
 })
+
+const vStartContainer = ref({
+  checkChallengerName() {
+    return false
+  },
+})
+
+function toPlay() {
+  if (vStartContainer.value.checkChallengerName()) {
+    compName.value = 'PlayContainer'
+  }
+}
+function toPlayPractice() {
+  compName.value = 'PlayContainerPractice'
+}
+function toStart() {
+  compName.value = 'StartContainer'
+}
 
 const challengerName = getStorage('challengerName')
 const isLimitTime = getStorage('isLimitTime')
@@ -52,16 +71,6 @@ const setting = reactive<Setting>({
 })
 
 provide('setting', setting)
-
-function toPlay() {
-  compName.value = 'PlayContainer'
-}
-function toPlayPractice() {
-  compName.value = 'PlayContainerPractice'
-}
-function toStart() {
-  compName.value = 'StartContainer'
-}
 </script>
 
 <style lang="scss">

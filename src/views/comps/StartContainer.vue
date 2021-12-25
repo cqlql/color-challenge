@@ -16,19 +16,38 @@
       <j-button type="green" @click="$emit('startPractice')">开始练习</j-button>
       <j-button @click="$emit('start')">开始挑战</j-button>
     </template>
-    <Dialog v-model:visible="visible" title="挑战设置"> </Dialog>
+    <SettingDialog
+      ref="vSettingDialog"
+      v-model:visible="visible"
+      title="挑战设置"
+    >
+    </SettingDialog>
   </j-container>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import Dialog from './SettingDialog.vue'
+import SettingDialog from './SettingDialog.vue'
 defineEmits(['start', 'startPractice'])
 const visible = ref(false)
+
+const vSettingDialog = ref({
+  checkChallengerName() {
+    return false
+  },
+})
+
+defineExpose({
+  checkChallengerName() {
+    return vSettingDialog.value.checkChallengerName()
+  },
+})
+
 function popupSetting() {
   visible.value = true
 }
 </script>
+
 <style lang="scss">
 .StartContainer {
   .j-button {
@@ -64,7 +83,7 @@ function popupSetting() {
 }
 
 .StartContainer_body {
-  max-height: 280px;
+  max-height: 380px;
   overflow: auto;
   // margin: 0 45px;
   -webkit-box-sizing: border-box;
@@ -75,6 +94,22 @@ function popupSetting() {
   line-height: 30px;
   color: #555;
   font-size: 20px;
-  text-indent: 40px;
+  // text-indent: 40px;
+
+  dl {
+    margin: 0;
+  }
+
+  dt {
+    font-weight: bold;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  ol {
+    margin: 0;
+  }
 }
 </style>

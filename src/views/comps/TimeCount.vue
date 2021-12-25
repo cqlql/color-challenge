@@ -167,6 +167,7 @@ if (setting.isLimitTime) {
   text-align: center;
   position: relative;
 }
+
 .TimoCount_clock {
   background: url('@/assets/icons.png') no-repeat 71.957% 23.15%;
   background-size: 510px auto;
@@ -174,8 +175,9 @@ if (setting.isLimitTime) {
   height: 46px;
   position: absolute;
   left: -60px;
-  top: 0px;
+  top: 0;
 }
+
 .TimoCount_time {
   position: relative;
 }
