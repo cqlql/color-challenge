@@ -31,6 +31,7 @@
       v-model:visible="dialogVisible"
       title="练习结果"
       :completeMsg="completeMsg"
+      :gradeMsg="gradeMsg"
       :list="dialogDataList"
       confirmBtnText="重新练习"
       @confirm="restart"
@@ -62,6 +63,7 @@ import useWordIpt from './hooks/useWordIpt'
 import ColorsBox from '@/components/ColorsBox/ColorsBox.vue'
 import GameTimeCountdown from '../GameTimeCountdown.vue'
 import useColorGame from './hooks/useColorGame'
+import levelGrade from './utils/level-grade'
 // import compare from './utils/compare'
 
 // const setting = inject<Setting>('setting') as Setting
@@ -107,6 +109,7 @@ const playStatus = ref<PlayStatusType>('countDown')
 const { level } = useColorGame()
 
 const completeMsg = ref('')
+const gradeMsg = ref('')
 
 let {
   inputWordCount,
@@ -166,7 +169,13 @@ function timeUp() {
  * @param {boolean} isComplete 是否完成所有关卡
  */
 function stopPlay(isComplete?: boolean) {
-  completeMsg.value = isComplete ? '恭喜你完成了所有管卡！' : ''
+  if (isComplete) {
+    completeMsg.value = '恭喜你完成了所有管卡！'
+    gradeMsg.value = levelGrade(level.value)
+  } else {
+    completeMsg.value = ''
+    gradeMsg.value = ''
+  }
 
   vColorsBox.value.pause()
 

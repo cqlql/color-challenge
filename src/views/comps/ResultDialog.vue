@@ -11,6 +11,9 @@
       <div v-if="completeMsg" class="row completeMsg">
         {{ completeMsg }}
       </div>
+      <div v-if="gradeMsg" class="row gradeMsg">
+        {{ gradeMsg }}
+      </div>
       <div v-for="(item, key) of list" class="row" :key="key">
         <div class="row_label">{{ item.label }}：</div>
         <div class="row_value"> {{ item.value }} </div>
@@ -32,6 +35,7 @@ withDefaults(
     list: GeneralItem[]
     confirmBtnText: string
     completeMsg?: string
+    gradeMsg?: string
   }>(),
   {
     list: () => [],
