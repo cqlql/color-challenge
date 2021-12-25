@@ -18,7 +18,7 @@
             placeholder="请输入挑战人姓名"
           ></j-input>
         </div>
-        <div class="errmsg"> 必须填写挑战人才能进行挑战模式 </div>
+        <div class="errmsg"> 必须填写挑战人才能进行挑战 </div>
       </div>
 
       <div class="row">
@@ -100,13 +100,23 @@ watch(challengerName, () => {
   challengerNameError.value = false
 })
 
+type EmptyFunction = ((v?: any) => void) | null
+
+let checkChallengerNameReject: EmptyFunction
+let checkChallengerNameResolve: EmptyFunction
+
 defineExpose({
   checkChallengerName() {
-    if (challengerName.value) {
-      return true
-    }
-    challengerNameError.value = true
-    emit('update:visible', true)
+    return new Promise((resolve, reject) => {
+      if (challengerName.value) {
+        resolve(null)
+        return
+      }
+      challengerNameError.value = true
+      emit('update:visible', true)
+      checkChallengerNameResolve = resolve
+      checkChallengerNameReject = reject
+    })
   },
 })
 
@@ -122,6 +132,12 @@ function confirm() {
     setStorage('isLimitTime', (setting.isLimitTime = isLimitTime.value))
     setStorage('time', (setting.time = time.value))
     close()
+    if (challengerName.value) {
+      checkChallengerNameResolve?.()
+    } else {
+      checkChallengerNameReject?.('还是没有填挑战人姓名')
+    }
+    checkChallengerNameReject = checkChallengerNameResolve = null
   }
 }
 function input(e: Event) {

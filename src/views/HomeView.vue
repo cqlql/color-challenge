@@ -48,10 +48,12 @@ const vStartContainer = ref({
   },
 })
 
-function toPlay() {
-  if (vStartContainer.value.checkChallengerName()) {
-    compName.value = 'PlayContainer'
-  }
+async function toPlay() {
+  await vStartContainer.value.checkChallengerName()
+  compName.value = 'PlayContainer'
+  // if (vStartContainer.value.checkChallengerName()) {
+  //   compName.value = 'PlayContainer'
+  // }
 }
 function toPlayPractice() {
   compName.value = 'PlayContainerPractice'
