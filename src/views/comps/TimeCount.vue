@@ -74,13 +74,13 @@ function CountDownFn({ time, cb, end, start }: TimeCountOption) {
     count -= 1
     cb(timeFormat({ secondCount: count }))
     if (count <= 0) {
-      elapsedSecondTime = totalSecond - count
       stop()
       end()
     }
   }, 1000)
 
   function stop() {
+    elapsedSecondTime = totalSecond - count
     clearInterval(timeId)
   }
 
