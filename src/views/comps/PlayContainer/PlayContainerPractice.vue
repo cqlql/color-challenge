@@ -18,7 +18,6 @@
         <ColorsBox
           ref="vColorsBox"
           v-model:level="level"
-          errorReminder
           @errorSelect="colorSelectError"
           @complete="colorGameComplete"
         />
@@ -166,7 +165,7 @@ function restart() {
 }
 
 function colorSelectError() {
-  console.log('颜色选择错误')
+  vColorsBox.value.showCorrect()
 }
 
 function colorGameComplete() {

@@ -2,49 +2,39 @@
   <j-container class="PlayContainer">
     <template #header>
       <div class="PlayContainer_header">
-        <TimeCount ref="vTimeCount" @end="timeEnd" />
         <div class="PlayContainer_header-r-info">
           <div class="tp-name">挑战模式</div>
-          <div class="curr-word">
-            已输入 <b>{{ inputWordCount }}</b> 个单词
-          </div>
+          <GameTimeCountdown v-if="isPlay" :key="level" @timeUp="timeUp" />
         </div>
+        <TimeCount ref="vTimeCount" @end="timeEnd" />
+        <div> 关卡：{{ level }} </div>
       </div>
     </template>
-    <div v-if="isPlay" class="PlayContainer_word-lb">
-      {{ currentWordInfo.label }}
-    </div>
     <div class="PlayContainer_body">
-      <input
-        v-if="isPlay"
-        ref="vWordInput"
-        class="PlayContainer_input"
-        type="text"
-        v-model="iptWordValue"
-        @keyup.enter="onEnter"
-      />
-      <div v-else-if="isCountDown" class="PlayContainer_countdown">
+      <div v-if="isCountDown" class="PlayContainer_countdown">
         {{ countDown }}
       </div>
       <template v-else>
-        <div class="englishchallenge-input" v-html="resolveWord"></div>
+        <ColorsBox
+          ref="vColorsBox"
+          v-model:level="level"
+          errorReminder
+          @errorSelect="colorSelectError"
+          @complete="colorGameComplete"
+        />
       </template>
     </div>
     <ResultDialog
       v-model:visible="dialogVisible"
       title="挑战结果"
       :completeMsg="completeMsg"
+      :gradeMsg="gradeMsg"
       :list="dialogDataList"
       confirmBtnText="重新挑战"
       @confirm="restart"
     />
     <template #footer>
-      <div class="PlayContainer_info" :class="{ err: hasInputError }">
-        {{ inputInfo }}
-        <!-- 您的输入有误！ -->
-        <!-- 输入正确！你是最棒哒！ -->
-      </div>
-      <j-button v-if="isPlay" @click="stopPlay">结束挑战</j-button>
+      <j-button v-if="isPlay" @click="stopPlay()">结束挑战</j-button>
       <j-button v-else-if="isFinish" @click="dialogVisible = true"
         >查看结果</j-button
       >
@@ -58,69 +48,66 @@ import { ref, watch, computed, inject } from 'vue'
 
 import useCountDown from './hooks/useCountDown'
 import TimeCount from '../TimeCount.vue'
+import type { ResultDialogItemType } from '../ResultDialog.vue'
 import ResultDialog from '../ResultDialog.vue'
 import type { PlayStatusType } from './hooks/useWordIpt'
-import useWordIpt from './hooks/useWordIpt'
-// import compare from './utils/compare'
+import ColorsBox from '@/components/ColorsBox/ColorsBox.vue'
+import GameTimeCountdown from '../GameTimeCountdown.vue'
+import useColorGame from './hooks/useColorGame'
 
 const setting = inject<Setting>('setting') as Setting
 
+let playCountdownTime = 3
+
+if (process.env.NODE_ENV !== 'production') {
+  playCountdownTime = 0
+}
+
 const vTimeCount = ref({
-  stopTime: () => {},
-  startTime: () => {},
-  getElapsedTime: () => '',
+  stopTime: () => {
+    console.error('vTimeCount 未初始')
+  },
+  startTime: () => {
+    console.error('vTimeCount 未初始')
+  },
+  getElapsedTime: () => {
+    console.error('vTimeCount 未初始')
+    return ''
+  },
+})
+
+const vColorsBox = ref({
+  showCorrect() {
+    console.log('vColorsBox 未初始')
+  },
+  reset() {
+    console.log('vColorsBox 未初始')
+  },
+  pause() {
+    console.log('vColorsBox 未初始')
+  },
+  getGradeTitle() {
+    console.log('vColorsBox 未初始')
+    return ''
+  },
 })
 
 defineEmits(['back'])
 
 const dialogVisible = ref(false)
-const dialogDataList = ref<GeneralItem[]>([])
+const dialogDataList = ref<ResultDialogItemType[]>([])
 
 const playStatus = ref<PlayStatusType>('countDown')
 
-function stopPlay() {
-  vTimeCount.value.stopTime()
-  dialogDataList.value = [
-    {
-      value: setting.challengerName || '',
-      label: '挑战人',
-    },
-    {
-      value: setting.isLimitTime ? '限时挑战' : '不限时挑战',
-      label: '挑战模式',
-    },
-    {
-      value: correctWordCount.value + '个',
-      label: '正确单词数',
-    },
-    {
-      value: vTimeCount.value.getElapsedTime(),
-      label: '挑战用时',
-    },
-  ]
-  dialogVisible.value = true
-}
+const { level } = useColorGame()
 
-let {
-  inputWordCount,
-  correctWordCount,
-  iptWordValue,
-  onEnter,
-  confirm,
-  inputInfo,
-  hasInputError,
-  resolveWord,
-  currentWordInfo,
-  completeMsg,
-  resetInput,
-} = useWordIpt(
-  stopPlay,
+const completeMsg = ref('')
+const gradeMsg = ref('')
+
+let { countDown, countDownRestart } = useCountDown(
+  playCountdownTime,
   playStatus,
-  // 全部完成
-  stopPlay,
 )
-
-let { countDown, countDownRestart } = useCountDown(3, playStatus)
 
 let isPlay = computed(() => {
   return playStatus.value === 'play'
@@ -140,20 +127,73 @@ watch(isPlay, (isPlay) => {
   }
 })
 
+// 关卡时间到
+function timeUp() {
+  console.log('关卡时间到')
+  vColorsBox.value.showCorrect()
+  stopPlay()
+}
+
+/**
+ * @param {boolean} isComplete 是否完成所有关卡
+ */
+function stopPlay(isComplete?: boolean) {
+  if (isComplete) {
+    completeMsg.value = '恭喜你完成了所有关卡！'
+  } else {
+    completeMsg.value = ''
+  }
+  gradeMsg.value = vColorsBox.value.getGradeTitle()
+
+  vColorsBox.value.pause()
+
+  vTimeCount.value.stopTime()
+
+  dialogDataList.value = [
+    {
+      value: setting.challengerName || '',
+      label: '挑战人',
+    },
+    {
+      value: String(level.value) + '关',
+      label: '通过关数',
+    },
+    {
+      value: vColorsBox.value.getGradeTitle(),
+      label: '色感等级',
+      rowClass: 'value-em',
+    },
+    {
+      value: setting.isLimitTime ? '限时挑战' : '不限时挑战',
+      label: '挑战模式',
+    },
+    {
+      value: vTimeCount.value.getElapsedTime(),
+      label: '挑战用时',
+    },
+  ]
+  dialogVisible.value = true
+  playStatus.value = 'finish'
+}
+
 function restart() {
-  resetInput()
+  vColorsBox.value.reset()
   countDownRestart()
   dialogVisible.value = false
 }
 
-function timeEnd() {
-  confirm(iptWordValue.value)
+function colorSelectError() {
+  stopPlay()
 }
 
-// 获焦
-let vWordInput = ref<HTMLInputElement | null>(null)
-watch(vWordInput, () => {
-  vWordInput.value?.focus()
-})
+function colorGameComplete() {
+  stopPlay(true)
+}
+
+function timeEnd() {
+  console.log('限时模式时间到')
+  stopPlay()
+  // confirm(iptWordValue.value)
+}
 </script>
 <style lang="scss" src="@/views/comps/PlayContainer/PlayContainer.scss"></style>

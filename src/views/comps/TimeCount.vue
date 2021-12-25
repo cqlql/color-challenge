@@ -26,6 +26,9 @@ if (props.isPractice) {
   setting = inject<Setting>('setting') as Setting
 }
 
+// if (process.env.NODE_ENV !== 'production') {
+//   setting.time = '0'
+// }
 const emit = defineEmits<{
   (e: 'end'): void
 }>()

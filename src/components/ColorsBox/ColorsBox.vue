@@ -23,7 +23,7 @@ import levelGrade from '@/components/ColorsBox/level-grade'
 const props = withDefaults(
   defineProps<{
     level: number
-    errorReminder?: boolean
+    // errorReminder?: boolean
   }>(),
   {
     level: 1,
@@ -113,9 +113,9 @@ function onSelect(index: number) {
   if (isRight(index)) {
     nextLevel()
   } else {
-    if (props.errorReminder) {
-      showCorrect()
-    }
+    // if (props.errorReminder) {
+    //   showCorrect()
+    // }
     emits('errorSelect', {
       gradeTitle: levelGrade(colorGameLevel.value, colorGameLastStage),
     })

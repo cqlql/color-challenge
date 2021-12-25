@@ -13,10 +13,10 @@ const isEmergency = ref(false)
 const time = ref('20')
 let urgentTime = 5 // 紧急界限时间
 
-if (process.env.NODE_ENV !== 'production') {
-  time.value = '2'
-  urgentTime = 1
-}
+// if (process.env.NODE_ENV !== 'production') {
+//   time.value = '20'
+//   urgentTime = 1
+// }
 
 let timeValue = Number(time.value)
 

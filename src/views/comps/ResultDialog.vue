@@ -11,17 +11,9 @@
       <div v-if="completeMsg" class="row completeMsg">
         {{ completeMsg }}
       </div>
-      <div v-if="gradeMsg" class="row">
-        <div class="row_label">你的色感等级：</div>
-        <div class="row_value">
-          <b>{{ gradeMsg }}</b>
-        </div>
-
-        <!-- <b>{{ gradeMsg }}</b> -->
-      </div>
       <div v-for="(item, key) of list" class="row" :key="key">
         <div class="row_label">{{ item.label }}：</div>
-        <div class="row_value"> {{ item.value }} </div>
+        <div class="row_value" :class="item.rowClass"> {{ item.value }} </div>
       </div>
       <div class="btns">
         <j-button @click="confirm">{{ confirmBtnText }}</j-button>
@@ -35,9 +27,15 @@
 import { withDefaults } from 'vue'
 import DialogVue from './DialogVue.vue'
 
+export interface ResultDialogItemType {
+  value: string
+  label: string
+  rowClass?: 'value-em'
+}
+
 withDefaults(
   defineProps<{
-    list: GeneralItem[]
+    list: ResultDialogItemType[]
     confirmBtnText: string
     completeMsg?: string
     gradeMsg?: string
@@ -105,6 +103,10 @@ function confirm() {
     line-height: 2;
     // font-size: 16px;
     color: #333;
+  }
+
+  .value-em {
+    font-weight: bold;
   }
   // .time-ipt {
   //   width: 90px;
