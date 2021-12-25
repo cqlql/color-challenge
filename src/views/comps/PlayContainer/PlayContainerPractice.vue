@@ -44,7 +44,6 @@
 </template>
 
 <script setup lang="ts">
-import type { ComponentPublicInstance } from 'vue'
 import { ref, watch, computed } from 'vue'
 
 import useCountDown from './hooks/useCountDown'
@@ -54,10 +53,8 @@ import type { PlayStatusType } from './hooks/useWordIpt'
 import ColorsBox from '@/components/ColorsBox/ColorsBox.vue'
 import GameTimeCountdown from '../GameTimeCountdown.vue'
 import useColorGame from './hooks/useColorGame'
-// import compare from './utils/compare'
 
-// const setting = inject<Setting>('setting') as Setting
-
+// 开始游戏倒计时
 let playCountdownTime = 3
 
 if (process.env.NODE_ENV !== 'production') {
@@ -122,12 +119,6 @@ let isFinish = computed(() => {
   return playStatus.value === 'finish'
 })
 
-// 获焦
-let vWordInput = ref<ComponentPublicInstance | null>(null)
-watch(vWordInput, () => {
-  vWordInput.value?.$el.focus()
-})
-
 watch(isPlay, (isPlay) => {
   if (isPlay) {
     vTimeCount.value.startTime()
@@ -145,7 +136,7 @@ function timeUp() {
  */
 function stopPlay(isComplete?: boolean) {
   if (isComplete) {
-    completeMsg.value = '恭喜你完成了所有管卡！'
+    completeMsg.value = '恭喜你完成了所有关卡！'
   } else {
     completeMsg.value = ''
   }
