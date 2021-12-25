@@ -6,13 +6,10 @@
           <div class="tp-name">练习模式</div>
           <GameTimeCountdown v-if="isPlay" :key="level" @timeUp="timeUp" />
         </div>
-        <TimeCount ref="vTimeCount" @end="timeEnd" :isPractice="true" />
+        <TimeCount ref="vTimeCount" :isPractice="true" />
         <div> 关卡：{{ level }} </div>
       </div>
     </template>
-    <div v-if="!isCountDown" class="PlayContainer_word-lb">
-      {{ currentWordInfo.label }}
-    </div>
     <div class="PlayContainer_body">
       <div v-if="isCountDown" class="PlayContainer_countdown">
         {{ countDown }}
@@ -37,11 +34,6 @@
       @confirm="restart"
     />
     <template #footer>
-      <div class="PlayContainer_info" :class="{ err: hasInputError }">
-        {{ inputInfo }}
-        <!-- 您的输入有误！ -->
-        <!-- 输入正确！你是最棒哒！ -->
-      </div>
       <j-button v-if="isPlay" @click="stopPlay()">结束练习</j-button>
       <j-button v-else-if="isFinish" @click="dialogVisible = true"
         >查看结果</j-button
@@ -59,11 +51,9 @@ import useCountDown from './hooks/useCountDown'
 import TimeCount from '../TimeCount.vue'
 import ResultDialog from '../ResultDialog.vue'
 import type { PlayStatusType } from './hooks/useWordIpt'
-import useWordIpt from './hooks/useWordIpt'
 import ColorsBox from '@/components/ColorsBox/ColorsBox.vue'
 import GameTimeCountdown from '../GameTimeCountdown.vue'
 import useColorGame from './hooks/useColorGame'
-import levelGrade from './utils/level-grade'
 // import compare from './utils/compare'
 
 // const setting = inject<Setting>('setting') as Setting
@@ -97,6 +87,10 @@ const vColorsBox = ref({
   pause() {
     console.log('vColorsBox 未初始')
   },
+  getGradeTitle() {
+    console.log('vColorsBox 未初始')
+    return ''
+  },
 })
 
 defineEmits(['back'])
@@ -110,25 +104,6 @@ const { level } = useColorGame()
 
 const completeMsg = ref('')
 const gradeMsg = ref('')
-
-let {
-  inputWordCount,
-  correctWordCount,
-  iptWordValue,
-  // onEnter,
-  confirm,
-  inputInfo,
-  hasInputError,
-  resolveWord,
-  currentWordInfo,
-  resetInput,
-} = useWordIpt(
-  () => {},
-  playStatus,
-  // 全部完成
-  stopPlay,
-  true,
-)
 
 let { countDown, countDownRestart } = useCountDown(
   playCountdownTime,
@@ -171,18 +146,17 @@ function timeUp() {
 function stopPlay(isComplete?: boolean) {
   if (isComplete) {
     completeMsg.value = '恭喜你完成了所有管卡！'
-    gradeMsg.value = levelGrade(level.value)
   } else {
     completeMsg.value = ''
-    gradeMsg.value = ''
   }
+  gradeMsg.value = vColorsBox.value.getGradeTitle()
 
   vColorsBox.value.pause()
 
   vTimeCount.value.stopTime()
   dialogDataList.value = [
     {
-      value: String(level.value),
+      value: String(level.value) + '关',
       label: '通过关数',
     },
     {
@@ -196,13 +170,8 @@ function stopPlay(isComplete?: boolean) {
 
 function restart() {
   vColorsBox.value.reset()
-  resetInput()
   countDownRestart()
   dialogVisible.value = false
-}
-
-function timeEnd() {
-  confirm(iptWordValue.value)
 }
 
 function colorSelectError() {
@@ -212,9 +181,5 @@ function colorSelectError() {
 function colorGameComplete() {
   stopPlay(true)
 }
-// function onInput() {
-//   hasInputError.value = false
-//   inputInfo.value = ''
-// }
 </script>
 <style lang="scss" src="@/views/comps/PlayContainer/PlayContainer.scss"></style>

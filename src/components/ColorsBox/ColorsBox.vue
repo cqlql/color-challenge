@@ -18,6 +18,7 @@ import { ref, watch } from 'vue'
 import GridIItem from './GridIItem.vue' // @ is an alias to /src
 import type { ColorType } from './color-game'
 import renderLevel from './color-game'
+import levelGrade from '@/components/ColorsBox/level-grade'
 
 const props = withDefaults(
   defineProps<{
@@ -31,7 +32,7 @@ const props = withDefaults(
 
 const emits = defineEmits<{
   (e: 'update:level', v: number): void
-  (e: 'errorSelect'): void
+  (e: 'errorSelect', result: { gradeTitle: string }): void
   (e: 'complete'): void
 }>()
 
@@ -71,6 +72,9 @@ defineExpose({
   },
   pause() {
     pause.value = true
+  },
+  getGradeTitle() {
+    return levelGrade(colorGameLevel.value, colorGameLastStage)
   },
 })
 
@@ -112,7 +116,9 @@ function onSelect(index: number) {
     if (props.errorReminder) {
       showCorrect()
     }
-    emits('errorSelect')
+    emits('errorSelect', {
+      gradeTitle: levelGrade(colorGameLevel.value, colorGameLastStage),
+    })
   }
 }
 

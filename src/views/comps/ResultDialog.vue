@@ -11,8 +11,13 @@
       <div v-if="completeMsg" class="row completeMsg">
         {{ completeMsg }}
       </div>
-      <div v-if="gradeMsg" class="row gradeMsg">
-        {{ gradeMsg }}
+      <div v-if="gradeMsg" class="row">
+        <div class="row_label">你的色感等级：</div>
+        <div class="row_value">
+          <b>{{ gradeMsg }}</b>
+        </div>
+
+        <!-- <b>{{ gradeMsg }}</b> -->
       </div>
       <div v-for="(item, key) of list" class="row" :key="key">
         <div class="row_label">{{ item.label }}：</div>
@@ -86,9 +91,10 @@ function confirm() {
     color: #67c23a;
   }
 
+  // .gradeMsg {  }
+
   .row_label {
     width: 50%;
-    line-height: 16px;
     text-align: right;
     padding-right: 10px;
     line-height: 2;
