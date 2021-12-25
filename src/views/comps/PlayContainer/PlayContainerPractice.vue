@@ -126,7 +126,6 @@ watch(isPlay, (isPlay) => {
 
 // 关卡时间到
 function timeUp() {
-  console.log('关卡时间到')
   vColorsBox.value.showCorrect()
 }
 

@@ -43,17 +43,20 @@ watch(compName, (name: string) => {
 })
 
 const vStartContainer = ref({
-  checkChallengerName() {
-    return false
+  async checkChallengerName() {
+    return Promise.reject('未初始化')
   },
 })
 
 async function toPlay() {
-  await vStartContainer.value.checkChallengerName()
-  compName.value = 'PlayContainer'
-  // if (vStartContainer.value.checkChallengerName()) {
-  //   compName.value = 'PlayContainer'
-  // }
+  vStartContainer.value
+    .checkChallengerName()
+    .then(() => {
+      compName.value = 'PlayContainer'
+    })
+    .catch((err: any) => {
+      console.error(err)
+    })
 }
 function toPlayPractice() {
   compName.value = 'PlayContainerPractice'
