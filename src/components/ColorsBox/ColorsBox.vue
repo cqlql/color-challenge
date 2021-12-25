@@ -14,9 +14,10 @@
 </template>
 
 <script lang="ts" setup>
-import { watch } from 'vue'
+import { ref, watch } from 'vue'
 import GridIItem from './GridIItem.vue' // @ is an alias to /src
-import useRenderColors from './hooks/useRenderColors'
+import type { ColorType } from './color-game'
+import renderLevel from './color-game'
 
 const props = withDefaults(
   defineProps<{
@@ -31,37 +32,36 @@ const props = withDefaults(
 const emits = defineEmits<{
   (e: 'update:level', v: number): void
   (e: 'errorSelect'): void
+  (e: 'complete'): void
 }>()
 
-const {
-  pause,
-  zoomIndex,
-  colors,
-  gridColumnNumber,
-  nextLevel,
-  isRight,
-  // 当前级别
-  colorGameLevel,
-  // 正确格子索引
-  correctIndex,
-} = useRenderColors(props)
+// 暂停
+const pause = ref(false)
+
+// 最高级
+let colorGameLastStage = 50
+
+if (process.env.NODE_ENV !== 'production') {
+  colorGameLastStage = 2
+}
+
+// 当前级别
+const colorGameLevel = ref(0)
+
+// 正确格子索引
+const correctIndex = ref(-1)
+
+// 放大指定方块，提示方块位置
+const zoomIndex = ref(-1)
+
+const colors = ref<ColorType[]>([])
+const gridColumnNumber = ref(props.level)
+
+setLevel(gridColumnNumber.value)
 
 watch(colorGameLevel, (colorGameLevelVal) => {
   emits('update:level', colorGameLevelVal)
 })
-
-// 显示游戏结束
-// function showGameOver(level: number) {}
-
-// function showCorrect() {}
-
-//
-// function gameOver() {
-//   // showCorrect();
-//   setTimeout(() => {
-//     // showGameOver(colorGameLevel - 1)
-//   }, 2000)
-// }
 
 defineExpose({
   showCorrect,
@@ -73,6 +73,34 @@ defineExpose({
     pause.value = true
   },
 })
+
+function nextLevel() {
+  let level = colorGameLevel.value
+  level += 1
+  if (level > colorGameLastStage) {
+    // 挑战完成
+    emits('complete')
+  } else {
+    setLevel(level)
+  }
+}
+
+function setLevel(level: number) {
+  zoomIndex.value = -1 // 停止当前动画
+
+  const colorData = renderLevel(level, correctIndex.value)
+  colors.value = colorData.colors
+  gridColumnNumber.value = colorData.gridColumnNumber
+  correctIndex.value = colorData.correctIndex
+  colorGameLevel.value = level
+}
+
+function isRight(index: number) {
+  if (correctIndex.value === index) {
+    return true
+  }
+  return false
+}
 
 function onSelect(index: number) {
   // 暂停情况不可点击

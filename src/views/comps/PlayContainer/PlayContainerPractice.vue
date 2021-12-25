@@ -41,7 +41,7 @@
         <!-- 您的输入有误！ -->
         <!-- 输入正确！你是最棒哒！ -->
       </div>
-      <j-button v-if="isPlay" @click="stopPlay">结束练习</j-button>
+      <j-button v-if="isPlay" @click="stopPlay()">结束练习</j-button>
       <j-button v-else-if="isFinish" @click="dialogVisible = true"
         >查看结果</j-button
       >
@@ -165,7 +165,7 @@ function timeUp() {
 /**
  * @param {boolean} isComplete 是否完成所有关卡
  */
-function stopPlay(isComplete: boolean) {
+function stopPlay(isComplete?: boolean) {
   completeMsg.value = isComplete ? '恭喜你完成了所有管卡！' : ''
 
   vColorsBox.value.pause()
