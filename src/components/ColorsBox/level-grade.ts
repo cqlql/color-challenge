@@ -9,13 +9,11 @@ export default function levelGrade(level: number, maxLevel: number) {
     { name: '最强王者' },
   ]
 
-  const gradesTotal = grades.length
-
   if (level === 0) {
     return grades[0].name
   }
 
-  const grade = Math.ceil(level / (maxLevel / gradesTotal))
-
-  return grades[grade - 1].name
+  const gradesTotal = grades.length
+  const grade = Math.ceil(level / (maxLevel / (gradesTotal - 1)))
+  return grades[grade].name
 }

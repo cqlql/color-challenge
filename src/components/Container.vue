@@ -70,6 +70,7 @@ defineProps<{
   background-color: #fff;
   box-shadow: 0 10px 12px 0 rgb(2 25 44 / 26%);
   border: 5px solid rgba(124, 225, 255, 0.55);
+  // border: 5px solid rgb(120 224 255);
 }
 
 .j-container_header {
