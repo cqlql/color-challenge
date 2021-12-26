@@ -2,12 +2,18 @@
   <j-container class="PlayContainer">
     <template #header>
       <div class="PlayContainer_header">
-        <div class="PlayContainer_header-r-info">
-          <div class="tp-name">练习模式</div>
-          <GameTimeCountdown v-if="isPlay" :key="level" @timeUp="timeUp" />
+        <div class="PlayContainer_header-column">
+          <div class="PlayContainer_header-left">
+            <div class="tp-name">练习模式</div>
+            <GameTimeCountdown ref="vGameTimeCountdown" @timeUp="timeUp" />
+          </div>
         </div>
-        <TimeCount ref="vTimeCount" :isPractice="true" />
-        <div> 关卡：{{ level }} </div>
+        <TimeCount
+          class="PlayContainer_header-column"
+          ref="vTimeCount"
+          :isPractice="true"
+        />
+        <div class="PlayContainer_header-column"> 关卡：{{ level }} </div>
       </div>
     </template>
     <div class="PlayContainer_body">
@@ -20,6 +26,7 @@
           v-model:level="level"
           @errorSelect="colorSelectError"
           @complete="colorGameComplete"
+          @newStart="colorGameNewStart"
         />
       </template>
     </div>
@@ -70,6 +77,15 @@ const vTimeCount = ref({
   getElapsedTime: () => {
     console.error('vTimeCount 未初始')
     return ''
+  },
+})
+
+const vGameTimeCountdown = ref({
+  restart: () => {
+    console.error('vGameTimeCountdown 未初始')
+  },
+  stop: () => {
+    console.error('vGameTimeCountdown 未初始')
   },
 })
 
@@ -142,6 +158,7 @@ function stopPlay(isComplete?: boolean) {
   vColorsBox.value.pause()
 
   vTimeCount.value.stopTime()
+  vGameTimeCountdown.value.stop()
   dialogDataList.value = [
     {
       value: vColorsBox.value.getGradeTitle(),
@@ -173,6 +190,10 @@ function colorSelectError() {
 
 function colorGameComplete() {
   stopPlay(true)
+}
+
+function colorGameNewStart() {
+  vGameTimeCountdown.value.restart()
 }
 </script>
 <style lang="scss" src="@/views/comps/PlayContainer/PlayContainer.scss"></style>

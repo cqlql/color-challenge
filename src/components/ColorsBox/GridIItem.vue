@@ -63,6 +63,6 @@ function onClick() {
   bottom: 5px;
   left: 5px;
   right: 5px;
-  border-radius: 5px;
+  border-radius: 12%;
 }
 </style>

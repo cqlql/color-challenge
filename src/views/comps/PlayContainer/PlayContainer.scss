@@ -13,14 +13,23 @@
 }
 .PlayContainer_header {
   font-size: 24px;
-  line-height: 22px;
+  line-height: 30px;
   color: #00b7ee;
   margin: 26px 0;
   text-align: center;
   position: relative;
   display: flex;
   justify-content: space-between;
+  padding: 0 30px;
 }
+.PlayContainer_header-column {
+  display: flex;
+  align-items: flex-end;
+  align-items: center;
+}
+.PlayContainer_header-left {
+}
+
 .PlayContainer_body {
   min-height: 180px;
   // overflow: auto;
@@ -65,29 +74,4 @@
 
   width: 100%;
   border: none;
-}
-
-.PlayContainer_header-r-info {
-  // position: absolute;
-  // right: 48px;
-  // top: -10px;
-  text-align: right;
-  .tp-name {
-    font-size: 16px;
-    color: #00b7ee;
-    // position: absolute;
-    // bottom: 0;
-    // right: 50px;
-    // line-height: 1;
-  }
-  // .curr-word {
-  //   padding-bottom: 8px;
-  //   font-size: 16px;
-  //   line-height: 24px;
-  //   color: #666;
-  //   text-align: right;
-  //   b {
-  //     color: #00b7ee;
-  //   }
-  // }
 }

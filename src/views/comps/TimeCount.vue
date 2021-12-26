@@ -1,7 +1,7 @@
 <template>
   <div class="TimoCount">
     <span class="TimoCount_time">
-      <span class="TimoCount_clock"></span>
+      <!-- <span class="TimoCount_clock"></span> -->
       {{ time }}
     </span>
   </div>
@@ -163,25 +163,27 @@ if (setting.isLimitTime) {
 </script>
 <style lang="scss">
 .TimoCount {
-  font-size: 36px;
-  line-height: 22px;
+  font-size: 48px;
+  font-weight: bold;
+  // line-height: 22px;
+  // color: #00b7ee;
   color: #00b7ee;
-  margin: 16px 0 12px;
+  // margin: 16px 0 12px;
   text-align: center;
-  position: relative;
+  // position: relative;
 }
 
-.TimoCount_clock {
-  background: url('@/assets/icons.png') no-repeat 71.957% 23.15%;
-  background-size: 510px auto;
-  width: 50px;
-  height: 46px;
-  position: absolute;
-  left: -60px;
-  top: 0;
-}
+// .TimoCount_clock {
+//   background: url('@/assets/icons.png') no-repeat 71.957% 23.15%;
+//   background-size: 510px auto;
+//   width: 50px;
+//   height: 46px;
+//   position: absolute;
+//   left: -60px;
+//   top: 0;
+// }
 
-.TimoCount_time {
-  position: relative;
-}
+// .TimoCount_time {
+//   position: relative;
+// }
 </style>

@@ -34,6 +34,7 @@ const emits = defineEmits<{
   (e: 'update:level', v: number): void
   (e: 'errorSelect'): void
   (e: 'complete'): void
+  (e: 'newStart'): void
 }>()
 
 // 暂停
@@ -42,9 +43,9 @@ const pause = ref(false)
 // 最高级
 let colorGameLastStage = 50
 
-if (process.env.NODE_ENV !== 'production') {
-  colorGameLastStage = 2
-}
+// if (process.env.NODE_ENV !== 'production') {
+//   colorGameLastStage = 2
+// }
 
 // 当前进行的级别
 const colorGameLevel = ref(0)
@@ -101,6 +102,8 @@ function setLevel(level: number) {
   gridColumnNumber.value = colorData.gridColumnNumber
   correctIndex.value = colorData.correctIndex
   colorGameLevel.value = level
+
+  emits('newStart')
 }
 
 function isRight(index: number) {

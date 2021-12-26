@@ -65,8 +65,9 @@ defineProps<{
 }
 
 .j-container_main {
-  border-radius: 10px;
-  background-color: hsla(0, 0%, 100%, 0.55);
+  border-radius: 30px;
+  // background-color: hsla(0, 0%, 100%, 0.55);
+  background-color: #fff;
   box-shadow: 0 10px 12px 0 rgb(2 25 44 / 26%);
   border: 5px solid rgba(124, 225, 255, 0.55);
 }
@@ -81,7 +82,7 @@ defineProps<{
   // box-sizing: border-box;
   // padding: 18px;
   background-color: #fff;
-  border: 1px solid #b0eafb;
+  // border: 1px solid #b0eafb;
   // line-height: 30px;
   // color: #555;
   // font-size: 20px;

@@ -2,12 +2,18 @@
   <j-container class="PlayContainer">
     <template #header>
       <div class="PlayContainer_header">
-        <div class="PlayContainer_header-r-info">
-          <div class="tp-name">挑战模式</div>
-          <GameTimeCountdown v-if="isPlay" :key="level" @timeUp="timeUp" />
+        <div class="PlayContainer_header-column">
+          <div class="PlayContainer_header-left">
+            <div class="tp-name">挑战模式</div>
+            <GameTimeCountdown ref="vGameTimeCountdown" @timeUp="timeUp" />
+          </div>
         </div>
-        <TimeCount ref="vTimeCount" @end="timeEnd" />
-        <div> 关卡：{{ level }} </div>
+        <TimeCount
+          class="PlayContainer_header-column"
+          ref="vTimeCount"
+          @end="timeEnd"
+        />
+        <div class="PlayContainer_header-column"> 关卡：{{ level }} </div>
       </div>
     </template>
     <div class="PlayContainer_body">
@@ -21,6 +27,7 @@
           errorReminder
           @errorSelect="colorSelectError"
           @complete="colorGameComplete"
+          @newStart="colorGameNewStart"
         />
       </template>
     </div>
@@ -72,6 +79,14 @@ const vTimeCount = ref({
   getElapsedTime: () => {
     console.error('vTimeCount 未初始')
     return ''
+  },
+})
+const vGameTimeCountdown = ref({
+  restart: () => {
+    console.error('vGameTimeCountdown 未初始')
+  },
+  stop: () => {
+    console.error('vGameTimeCountdown 未初始')
   },
 })
 
@@ -146,7 +161,7 @@ function stopPlay(isComplete?: boolean) {
   vColorsBox.value.pause()
 
   vTimeCount.value.stopTime()
-
+  vGameTimeCountdown.value.stop()
   dialogDataList.value = [
     {
       value: setting.challengerName || '',
@@ -193,6 +208,10 @@ function timeEnd() {
   console.log('限时模式时间到')
   stopPlay()
   // confirm(iptWordValue.value)
+}
+
+function colorGameNewStart() {
+  vGameTimeCountdown.value.restart()
 }
 </script>
 <style lang="scss" src="@/views/comps/PlayContainer/PlayContainer.scss"></style>
