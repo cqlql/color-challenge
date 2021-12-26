@@ -53,6 +53,10 @@ function popupSetting() {
   .j-button {
     margin: 0 30px;
   }
+
+  // .j-container_main {
+  //   background-color: hsla(0, 0%, 100%, 0.55);
+  // }
 }
 
 .StartContainer_header {
@@ -86,30 +90,28 @@ function popupSetting() {
   max-height: 380px;
   overflow: auto;
   // margin: 0 45px;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding: 18px;
-  background-color: #fff;
-  // border: 1px solid #b0eafb;
+  border: 1px solid #b0eafb;
   line-height: 30px;
   color: #555;
   font-size: 20px;
-  // text-indent: 40px;
+  text-indent: 40px;
 
-  dl {
-    margin: 0;
-  }
+  // dl {
+  //   margin: 0;
+  // }
 
-  dt {
-    font-weight: bold;
-  }
+  // dt {
+  //   font-weight: bold;
+  // }
 
-  dd {
-    margin: 0;
-  }
+  // dd {
+  //   margin: 0;
+  // }
 
-  ol {
-    margin: 0;
-  }
+  // ol {
+  //   margin: 0;
+  // }
 }
 </style>

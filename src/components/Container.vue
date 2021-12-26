@@ -81,7 +81,7 @@ defineProps<{
   margin: 0 45px;
   // box-sizing: border-box;
   // padding: 18px;
-  background-color: #fff;
+  // background-color: #fff;
   // border: 1px solid #b0eafb;
   // line-height: 30px;
   // color: #555;
