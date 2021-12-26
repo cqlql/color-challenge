@@ -71,22 +71,22 @@ if (process.env.NODE_ENV !== 'production') {
 
 const vTimeCount = ref({
   stopTime: () => {
-    console.error('vTimeCount 未初始')
+    // console.error('vTimeCount 未初始')
   },
   startTime: () => {
-    console.error('vTimeCount 未初始')
+    // console.error('vTimeCount 未初始')
   },
   getElapsedTime: () => {
-    console.error('vTimeCount 未初始')
+    // console.error('vTimeCount 未初始')
     return ''
   },
 })
 const vGameTimeCountdown = ref({
   restart: () => {
-    console.error('vGameTimeCountdown 未初始')
+    // console.error('vGameTimeCountdown 未初始')
   },
   stop: () => {
-    console.error('vGameTimeCountdown 未初始')
+    // console.error('vGameTimeCountdown 未初始')
   },
 })
 

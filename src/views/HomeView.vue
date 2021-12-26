@@ -55,7 +55,7 @@ async function toPlay() {
       compName.value = 'PlayContainer'
     })
     .catch((err: any) => {
-      console.error(err)
+      // console.error(err)
     })
 }
 function toPlayPractice() {

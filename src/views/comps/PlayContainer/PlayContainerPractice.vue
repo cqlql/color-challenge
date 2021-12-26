@@ -69,39 +69,39 @@ if (process.env.NODE_ENV !== 'production') {
 
 const vTimeCount = ref({
   stopTime: () => {
-    console.error('vTimeCount 未初始')
+    //console.error('vTimeCount 未初始')
   },
   startTime: () => {
-    console.error('vTimeCount 未初始')
+    //console.error('vTimeCount 未初始')
   },
   getElapsedTime: () => {
-    console.error('vTimeCount 未初始')
+    //console.error('vTimeCount 未初始')
     return ''
   },
 })
 
 const vGameTimeCountdown = ref({
   restart: () => {
-    console.error('vGameTimeCountdown 未初始')
+    //console.error('vGameTimeCountdown 未初始')
   },
   stop: () => {
-    console.error('vGameTimeCountdown 未初始')
+    //console.error('vGameTimeCountdown 未初始')
   },
 })
 
 const vColorsBox = ref({
   currentLevel: 0,
   showCorrect() {
-    console.log('vColorsBox 未初始')
+    //console.error('vColorsBox 未初始')
   },
   reset() {
-    console.log('vColorsBox 未初始')
+    //console.error('vColorsBox 未初始')
   },
   pause() {
-    console.log('vColorsBox 未初始')
+    //console.error('vColorsBox 未初始')
   },
   getGradeTitle() {
-    console.log('vColorsBox 未初始')
+    //console.error('vColorsBox 未初始')
     return ''
   },
 })
