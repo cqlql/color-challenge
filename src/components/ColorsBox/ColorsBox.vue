@@ -20,6 +20,8 @@ import type { ColorType } from './color-game'
 import renderLevel from './color-game'
 import levelGrade from '@/components/ColorsBox/level-grade'
 
+console.log(levelGrade(0, 50))
+
 const props = withDefaults(
   defineProps<{
     level: number
