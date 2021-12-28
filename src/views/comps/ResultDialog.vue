@@ -4,9 +4,9 @@
     class="ResultDialog"
     v-on="{ 'update:visible': close }"
   >
-    <template #outside>
+    <!-- <template #outside>
       <div class="ResultDialog_ornament"></div>
-    </template>
+    </template> -->
     <div class="ResultDialog_body">
       <div v-if="completeMsg" class="row completeMsg">
         {{ completeMsg }}
@@ -63,15 +63,15 @@ function confirm() {
   width: 360px;
 }
 
-.ResultDialog_ornament {
-  background: url('@/assets/icons.png') no-repeat 0 0;
-  background-size: 510px auto;
-  width: 329px;
-  height: 251px;
-  position: absolute;
-  top: -248px;
-  right: 0;
-}
+// .ResultDialog_ornament {
+//   background: url('@/assets/icons.png') no-repeat 0 0;
+//   background-size: 510px auto;
+//   width: 329px;
+//   height: 251px;
+//   position: absolute;
+//   top: -248px;
+//   right: 0;
+// }
 
 .ResultDialog_body {
   font-size: 18px;

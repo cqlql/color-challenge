@@ -5,9 +5,9 @@
     class="setting-dialog"
     v-on="{ 'update:visible': close }"
   >
-    <template #outside>
+    <!-- <template #outside>
       <div class="setting-dialog_ornament"></div>
-    </template>
+    </template> -->
     <div class="setting-dialog_body">
       <div class="row" :class="{ err: challengerNameError }">
         <div class="row_label">挑战人：</div>
@@ -152,16 +152,16 @@ function input(e: Event) {
   width: 400px;
 }
 
-.setting-dialog_ornament {
-  background: url('@/assets/icons.png') no-repeat 0 100%;
-  background-size: 510px auto;
-  width: 222px;
-  height: 212px;
-  position: absolute;
-  top: -193px;
-  right: 16px;
-  z-index: 1;
-}
+// .setting-dialog_ornament {
+//   background: url('@/assets/icons.png') no-repeat 0 100%;
+//   background-size: 510px auto;
+//   width: 222px;
+//   height: 212px;
+//   position: absolute;
+//   top: -193px;
+//   right: 16px;
+//   z-index: 1;
+// }
 
 .setting-dialog_body {
   font-size: 18px;
