@@ -105,7 +105,9 @@ function nextLevel() {
 }
 
 function setLevel(level: number) {
-  zoomIndex.value = -1 // 停止当前动画
+  // 停止当前动画
+  zoomIndex.value = -1
+  headShakeIndex.value = -1
 
   const colorData = renderLevel(level, correctIndex.value)
   colors.value = colorData.colors
