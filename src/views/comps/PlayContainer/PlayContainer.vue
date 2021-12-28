@@ -93,16 +93,19 @@ const vGameTimeCountdown = ref({
 const vColorsBox = ref({
   currentLevel: 0,
   showCorrect() {
-    console.log('vColorsBox 未初始')
+    // console.log('vColorsBox 未初始')
+  },
+  showWrong() {
+    // console.log('vColorsBox 未初始')
   },
   reset() {
-    console.log('vColorsBox 未初始')
+    // console.log('vColorsBox 未初始')
   },
   pause() {
-    console.log('vColorsBox 未初始')
+    // console.log('vColorsBox 未初始')
   },
   getGradeTitle() {
-    console.log('vColorsBox 未初始')
+    // console.log('vColorsBox 未初始')
     return ''
   },
 })
@@ -143,7 +146,6 @@ watch(isPlay, (isPlay) => {
 
 // 关卡时间到
 function timeUp() {
-  console.log('关卡时间到')
   vColorsBox.value.showCorrect()
   stopPlay()
 }
@@ -197,17 +199,17 @@ function restart() {
 }
 
 function colorSelectError() {
-  stopPlay()
+  // stopPlay()
+  vColorsBox.value.showWrong()
 }
 
 function colorGameComplete() {
   stopPlay(true)
 }
 
+// 限时模式时间到
 function timeEnd() {
-  console.log('限时模式时间到')
   stopPlay()
-  // confirm(iptWordValue.value)
 }
 
 function colorGameNewStart() {

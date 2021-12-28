@@ -6,7 +6,10 @@
         :key="index"
         :color="color"
         :gridColumnNumber="gridColumnNumber"
-        :class="{ zoom: zoomIndex === index }"
+        :class="{
+          zoom: zoomIndex === index,
+          headShake: headShakeIndex === index,
+        }"
         @click="onSelect(index)"
       ></GridIItem>
     </div>
@@ -53,11 +56,17 @@ const colorGameLevel = ref(0)
 // 当前完成的级别
 const currentLevel = ref(colorGameLevel.value)
 
+// 当前选择格子索引
+const currentIndex = ref(-1)
+
 // 正确格子索引
 const correctIndex = ref(-1)
 
 // 放大指定方块，提示方块位置
 const zoomIndex = ref(-1)
+
+// 摇头指定方块，提示选择错误
+const headShakeIndex = ref(-1)
 
 const colors = ref<ColorType[]>([])
 const gridColumnNumber = ref(props.level)
@@ -70,6 +79,7 @@ watch(colorGameLevel, (colorGameLevelVal) => {
 
 defineExpose({
   showCorrect,
+  showWrong,
   currentLevel,
   reset() {
     pause.value = false
@@ -117,6 +127,8 @@ function onSelect(index: number) {
   // 暂停情况不可点击
   if (pause.value) return
 
+  currentIndex.value = index
+
   if (isRight(index)) {
     currentLevel.value = colorGameLevel.value
     nextLevel()
@@ -132,6 +144,12 @@ function showCorrect() {
   zoomIndex.value = -1
   setTimeout(() => {
     zoomIndex.value = correctIndex.value
+  }, 1)
+}
+function showWrong() {
+  headShakeIndex.value = -1
+  setTimeout(() => {
+    headShakeIndex.value = currentIndex.value
   }, 1)
 }
 </script>
@@ -162,6 +180,38 @@ function showCorrect() {
 
     to {
       transform: scale(1.5);
+    }
+  }
+
+  .headShake {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-name: headShake;
+  }
+
+  @keyframes headShake {
+    0% {
+      transform: translateX(0);
+    }
+
+    6.5% {
+      transform: translateX(-6px) rotateY(-9deg);
+    }
+
+    18.5% {
+      transform: translateX(5px) rotateY(7deg);
+    }
+
+    31.5% {
+      transform: translateX(-3px) rotateY(-5deg);
+    }
+
+    43.5% {
+      transform: translateX(2px) rotateY(3deg);
+    }
+
+    50% {
+      transform: translateX(0);
     }
   }
 }
