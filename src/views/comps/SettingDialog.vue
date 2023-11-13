@@ -16,7 +16,7 @@
             ref="vInputName"
             v-model:value="challengerName"
             placeholder="请输入挑战人姓名"
-          ></j-input>
+          />
         </div>
         <div class="errmsg">必须填写挑战人才能进行挑战</div>
       </div>
@@ -45,8 +45,7 @@
       <div class="row">
         <div class="row_label">时间：</div>
         <div class="row_value">
-          <j-input v-model:value="time" class="time-ipt" @input="input"></j-input
-          ><span class="sub">分钟</span>
+          <j-input v-model:value="time" class="time-ipt" @input="input"/><span class="sub">分钟</span>
         </div>
       </div>
       <div class="btns">
@@ -126,6 +125,7 @@ function close() {
 function confirm() {
   if (setting) {
     setStorage('challengerName', (setting.challengerName = challengerName.value))
+    setStorage('challengeMode', (setting.challengeMode = challengeMode.value))
     setStorage('isLimitTime', (setting.isLimitTime = isLimitTime.value))
     setStorage('time', (setting.time = time.value))
     close()
@@ -138,7 +138,7 @@ function confirm() {
   }
 }
 function input(e: Event) {
-  let ipt = e.target as HTMLInputElement
+  const ipt = e.target as HTMLInputElement
   let v = Number(ipt.value.replace(/[^\d]+/g, ''))
   if (v > 99) v = 99
   ipt.value = String(v)
