@@ -9,8 +9,8 @@
           </div>
         </div>
         <TimeCount
-          class="PlayContainer_header-column"
           ref="vTimeCount"
+          class="PlayContainer_header-column"
           @end="timeEnd"
         />
         <div class="PlayContainer_header-column"> 关卡：{{ level }} </div>
@@ -65,7 +65,7 @@ const setting = inject<Setting>('setting') as Setting
 
 let playCountdownTime = 3
 
-if (process.env.NODE_ENV !== 'production') {
+if (!import.meta.env.PROD) {
   playCountdownTime = 0
 }
 
@@ -121,20 +121,20 @@ const { level } = useColorGame()
 
 const completeMsg = ref('')
 
-let { countDown, countDownRestart } = useCountDown(
+const { countDown, countDownRestart } = useCountDown(
   playCountdownTime,
   playStatus,
 )
 
-let isPlay = computed(() => {
+const isPlay = computed(() => {
   return playStatus.value === 'play'
 })
 
-let isCountDown = computed(() => {
+const isCountDown = computed(() => {
   return playStatus.value === 'countDown'
 })
 
-let isFinish = computed(() => {
+const isFinish = computed(() => {
   return playStatus.value === 'finish'
 })
 
@@ -199,8 +199,11 @@ function restart() {
 }
 
 function colorSelectError() {
-  // stopPlay()
-  vColorsBox.value.showWrong()
+  if (setting.challengeMode==='hard'){
+    stopPlay()
+  } else {
+    vColorsBox.value.showWrong()
+  }
 }
 
 function colorGameComplete() {

@@ -18,23 +18,26 @@
             placeholder="请输入挑战人姓名"
           ></j-input>
         </div>
-        <div class="errmsg"> 必须填写挑战人才能进行挑战 </div>
+        <div class="errmsg">必须填写挑战人才能进行挑战</div>
       </div>
-
+      <div class="row">
+        <div class="row_label">挑战模式：</div>
+        <div class="row_value">
+          <RadioVue :checked="challengeMode==='normal'" name="challengeMode" @change="challengeMode = 'normal'"
+            >普通模式</RadioVue
+          >
+          <RadioVue :checked="challengeMode==='hard'" name="challengeMode" @change="challengeMode='hard'"
+            >困难模式</RadioVue
+          >
+        </div>
+      </div>
       <div class="row">
         <div class="row_label">是否限时：</div>
         <div class="row_value">
-          <RadioVue
-            @change="(checked:boolean)=>{isLimitTime=checked}"
-            v-model:checked="isLimitTime"
-            name="LimitTime"
+          <RadioVue :checked="isLimitTime" name="LimitTime" @change="isLimitTime = $event"
             >限时挑战</RadioVue
           >
-          <RadioVue
-            :checked="!isLimitTime"
-            @change="(checked:boolean)=>{isLimitTime=!checked}"
-            name="LimitTime"
-            a="2"
+          <RadioVue :checked="!isLimitTime" name="LimitTime" @change="isLimitTime = !$event"
             >不限时挑战</RadioVue
           >
         </div>
@@ -42,11 +45,7 @@
       <div class="row">
         <div class="row_label">时间：</div>
         <div class="row_value">
-          <j-input
-            class="time-ipt"
-            v-model:value="time"
-            @input="input"
-          ></j-input
+          <j-input v-model:value="time" class="time-ipt" @input="input"></j-input
           ><span class="sub">分钟</span>
         </div>
       </div>
@@ -59,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, watch, nextTick } from 'vue'
+import { ref, inject, watch, nextTick } from 'vue';
 import RadioVue from '@/components/RadioVue.vue'
 import DialogVue from './DialogVue.vue'
 import { setStorage } from '@/utils/local-storage'
@@ -71,6 +70,7 @@ const props = defineProps<{
 const setting = inject<Setting>('setting') as Setting
 
 const challengerName = ref(setting.challengerName)
+const challengeMode = ref(setting.challengeMode)
 const isLimitTime = ref(setting.isLimitTime)
 const time = ref(setting.time)
 const challengerNameError = ref(false)
@@ -80,7 +80,7 @@ const emit = defineEmits<{
 }>()
 
 const vInputName = ref({
-  focus() {},
+  focus() {}
 })
 watch(
   () => props.visible,
@@ -93,7 +93,7 @@ watch(
         })
       })
     }
-  },
+  }
 )
 
 watch(challengerName, () => {
@@ -117,7 +117,7 @@ defineExpose({
       checkChallengerNameResolve = resolve
       checkChallengerNameReject = reject
     })
-  },
+  }
 })
 
 function close() {
@@ -125,10 +125,7 @@ function close() {
 }
 function confirm() {
   if (setting) {
-    setStorage(
-      'challengerName',
-      (setting.challengerName = challengerName.value),
-    )
+    setStorage('challengerName', (setting.challengerName = challengerName.value))
     setStorage('isLimitTime', (setting.isLimitTime = isLimitTime.value))
     setStorage('time', (setting.time = time.value))
     close()

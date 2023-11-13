@@ -46,7 +46,7 @@ const pause = ref(false)
 // 最高级
 let colorGameLastStage = 50
 
-// if (process.env.NODE_ENV !== 'production') {
+// if (!import.meta.env.PROD) {
 //   colorGameLastStage = 2
 // }
 

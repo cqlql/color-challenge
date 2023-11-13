@@ -17,7 +17,7 @@ let urgentTime = 5 // 紧急界限时间
 
 let timeId: number
 
-// if (process.env.NODE_ENV !== 'production') {
+// if (!import.meta.env.PROD) {
 //   time.value = '20'
 //   urgentTime = 1
 // }

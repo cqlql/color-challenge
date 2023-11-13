@@ -1,4 +1,4 @@
-type keyName = 'challengerName' | 'isLimitTime' | 'time'
+type keyName = 'challengeMode'|'challengerName' | 'isLimitTime' | 'time'
 // interface keyName:'challengerName' | 'isLimitTime' | 'time'
 
 export function setStorage(

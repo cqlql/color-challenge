@@ -26,7 +26,7 @@ if (props.isPractice) {
   setting = inject<Setting>('setting') as Setting
 }
 
-// if (process.env.NODE_ENV !== 'production') {
+// if (!import.meta.env.PROD) {
 //   setting.time = '0'
 // }
 const emit = defineEmits<{

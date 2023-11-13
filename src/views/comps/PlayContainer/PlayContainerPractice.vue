@@ -63,7 +63,7 @@ import useColorGame from './hooks/useColorGame'
 // 开始游戏倒计时
 let playCountdownTime = 3
 
-if (process.env.NODE_ENV !== 'production') {
+if (!import.meta.env.PROD) {
   playCountdownTime = 0
 }
 

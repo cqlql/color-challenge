@@ -3,16 +3,19 @@
     <div class="full-bg"></div>
     <TransitionSlide :derection="transitionDerection">
       <component
-        :is="{ StartContainer, PlayContainer, PlayContainerPractice }[compName]"
+        :is="
+          { StartContainer, PlayContainer,  PlayContainerPractice }[compName]
+        "
         ref="vStartContainer"
         @start="toPlay"
         @startPractice="toPlayPractice"
         @back="toStart"
-      ></component>
+      />
     </TransitionSlide>
     <div class="copyright">
       <div>
-        版权:深圳市南山区第二外国语学校（集团）海德学校<p>设计: 刘志勇</p>
+        版权:深圳市南山区第二外国语学校（集团）海德学校
+        <p>设计: 刘志勇</p>
       </div>
     </div>
   </div>
@@ -45,7 +48,7 @@ watch(compName, (name: string) => {
 const vStartContainer = ref({
   async checkChallengerName() {
     return Promise.reject('未初始化')
-  },
+  }
 })
 
 async function toPlay() {
@@ -60,17 +63,20 @@ async function toPlay() {
 }
 function toPlayPractice() {
   compName.value = 'PlayContainerPractice'
+
 }
 function toStart() {
   compName.value = 'StartContainer'
 }
 
 const challengerName = getStorage('challengerName')
+const challengeMode = getStorage('challengeMode') as Setting['challengeMode']
 const isLimitTime = getStorage('isLimitTime')
 const time = getStorage('time')
 
 const setting = reactive<Setting>({
   challengerName: challengerName ? challengerName : '',
+  challengeMode: challengeMode ? challengeMode : 'normal',
   isLimitTime: isLimitTime === null ? true : JSON.parse(isLimitTime),
   time: time ? time : '1',
 })
