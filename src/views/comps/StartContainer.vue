@@ -20,8 +20,7 @@
       ref="vSettingDialog"
       v-model:visible="visible"
       title="挑战设置"
-    >
-    </SettingDialog>
+    />
   </j-container>
 </template>
 
@@ -74,8 +73,7 @@ function popupSetting() {
     top: -2px;
     right: 50px;
     line-height: 1;
-    background: url('@/assets/icons.png') no-repeat 79.792% 22.197%;
-    background-size: 510px auto;
+    background: url('@/assets/setting-icon.png') no-repeat;
     width: 30px;
     height: 28px;
     cursor: pointer;
